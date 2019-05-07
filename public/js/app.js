@@ -3110,10 +3110,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3174,30 +3170,8 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    desactivarCategoria: function desactivarCategoria() {
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          swalWithBootstrapButtons.fire('Deleted!', 'Your file has been deleted.', 'success');
-        } else if ( // Read more about handling dismissals
-        result.dismiss === Swal.DismissReason.cancel) {
-          swalWithBootstrapButtons.fire('Cancelled', 'Your imaginary file is safe :)', 'error');
-        }
-      });
+    eliminarCategoria: function eliminarCategoria(categoria) {
+      alert('Eliminado');
     },
     validarCategoria: function validarCategoria() {
       this.errorCategoria = 0;
@@ -3232,6 +3206,18 @@ __webpack_require__.r(__webpack_exports__);
                 }
 
               case 'actualizar':
+                {
+                  this.modal = 1;
+                  this.tituloModal = 'Actualizar Paciente';
+                  this.tipoAccion = 2;
+                  this.categoria_id = data['id'];
+                  this.nombre = data['nombre'];
+                  this.telefono = data['telefono'];
+                  this.correo = data['correo'];
+                  break;
+                }
+
+              case 'eliminar':
                 {
                   this.modal = 1;
                   this.tituloModal = 'Actualizar Paciente';
@@ -42063,7 +42049,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-secondary",
+              staticClass: "btn btn-success",
               attrs: { type: "button" },
               on: {
                 click: function($event) {
@@ -42091,13 +42077,25 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.arrayCategoria, function(categoria) {
                   return _c("tr", { key: categoria.id }, [
+                    _c("td", {
+                      domProps: { textContent: _vm._s(categoria.nombre) }
+                    }),
+                    _vm._v(" "),
+                    _c("td", {
+                      domProps: { textContent: _vm._s(categoria.telefono) }
+                    }),
+                    _vm._v(" "),
+                    _c("td", {
+                      domProps: { textContent: _vm._s(categoria.correo) }
+                    }),
+                    _vm._v(" "),
                     _c(
                       "td",
                       [
                         _c(
                           "button",
                           {
-                            staticClass: "btn btn-warning btn-sm",
+                            staticClass: "btn btn-info btn-sm",
                             attrs: { type: "button" },
                             on: {
                               click: function($event) {
@@ -42109,7 +42107,11 @@ var render = function() {
                               }
                             }
                           },
-                          [_c("i", { staticClass: "icon-pencil" })]
+                          [
+                            _vm._v(
+                              "\n                                  Actualiza\n                                "
+                            )
+                          ]
                         ),
                         _vm._v("  \n                              "),
                         categoria.condicion
@@ -42121,13 +42123,16 @@ var render = function() {
                                   attrs: { type: "button" },
                                   on: {
                                     click: function($event) {
-                                      return _vm.desactivarCategoria(
-                                        categoria.id
-                                      )
+                                      $event.preventDefault()
+                                      return _vm.eliminarCategoria(categoria.id)
                                     }
                                   }
                                 },
-                                [_c("i", { staticClass: "icon-trash" })]
+                                [
+                                  _vm._v(
+                                    "\n                                        Elimina\n                                        \n                                  "
+                                  )
+                                ]
                               )
                             ]
                           : [
@@ -42147,33 +42152,7 @@ var render = function() {
                             ]
                       ],
                       2
-                    ),
-                    _vm._v(" "),
-                    _c("td", {
-                      domProps: { textContent: _vm._s(categoria.nombre) }
-                    }),
-                    _vm._v(" "),
-                    _c("td", {
-                      domProps: { textContent: _vm._s(categoria.telefono) }
-                    }),
-                    _vm._v(" "),
-                    _c("td", {
-                      domProps: { textContent: _vm._s(categoria.correo) }
-                    }),
-                    _vm._v(" "),
-                    _c("td", [
-                      categoria.condicion
-                        ? _c("div", [
-                            _c("span", { staticClass: "badge badge-success" }, [
-                              _vm._v("Activo")
-                            ])
-                          ])
-                        : _c("div", [
-                            _c("span", { staticClass: "badge badge-danger" }, [
-                              _vm._v("Desactivado")
-                            ])
-                          ])
-                    ])
+                    )
                   ])
                 }),
                 0
@@ -42494,15 +42473,13 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [_vm._v("Editar/Elimiar")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Nombre")]),
         _vm._v(" "),
         _c("th", [_vm._v("Telefono")]),
         _vm._v(" "),
         _c("th", [_vm._v("Correo")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Estado")])
+        _c("th", [_vm._v("Editar/Elimiar")])
       ])
     ])
   },

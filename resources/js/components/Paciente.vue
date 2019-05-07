@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <i class="fa fa-align-justify"></i> Pacientes
-                         <button type="button" @click="abrirModal('categoria','registrar')" class="btn btn-secondary">
+                         <button type="button" @click="abrirModal('categoria','registrar')" class="btn btn-success">
                             <i class="icon-plus"></i>&nbsp;Nuevo
                         </button>
                     </div>
@@ -29,24 +29,30 @@
                         <table class="table table-bordered table-striped table-sm">
                             <thead>
                                 <tr>
-                                    <th>Editar/Elimiar</th>
+                                   
                                     <th>Nombre</th>
                                     <th>Telefono</th>
                                     
                                     <th>Correo</th>
-                                    <th>Estado</th>
+                                     <th>Editar/Elimiar</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="categoria in arrayCategoria" :key="categoria.id">
-                                    <td>
-                                        <button type="button" @click="abrirModal('categoria','actualizar',categoria)" class="btn btn-warning btn-sm">
-                                          <i class="icon-pencil"></i>
+                                   
+                                    <td v-text="categoria.nombre"></td>
+                                    <td v-text="categoria.telefono"></td>
+                                    <td v-text="categoria.correo"></td>
+
+                                     <td>
+                                        <button type="button" @click="abrirModal('categoria','actualizar',categoria)" class="btn btn-info btn-sm">
+                                          Actualiza
                                         </button> &nbsp;
                                       <template v-if="categoria.condicion">
-                                          <button type="button" class="btn btn-danger btn-sm" @click="desactivarCategoria(categoria.id)">
-                                            <i class="icon-trash"></i>  
-
+                                          <button type="button" class="btn btn-danger btn-sm" @click.prevent="eliminarCategoria(categoria.id)">
+                                                Elimina
+                                                
                                           </button>
                                           
                                           </template>
@@ -59,18 +65,7 @@
                                           
                                           </template>
                                     </td>
-                                    <td v-text="categoria.nombre"></td>
-                                    <td v-text="categoria.telefono"></td>
-                                    <td v-text="categoria.correo"></td>
-                                    <td>
-                                        <div v-if="categoria.condicion">
-                                            <span class="badge badge-success">Activo</span>
-                                        </div>
-                                        <div v-else>
-                                            <span class="badge badge-danger">Desactivado</span>
-                                        </div>
-                                        
-                                    </td>
+                                   
                                 </tr>                                
                             </tbody>
                         </table>
@@ -146,6 +141,7 @@
                             <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                             <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarCategoria()">Guardar</button>
                             <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarCategoria() ">Actualizar</button>
+                             
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -223,43 +219,13 @@
 
 
             },
-            desactivarCategoria(){
-                const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-              confirmButton: 'btn btn-success',
-              cancelButton: 'btn btn-danger'
-             },
-             buttonsStyling: false,
-            })
 
-            swalWithBootstrapButtons.fire({
-  title: 'Are you sure?',
-  text: "You won't be able to revert this!",
-  type: 'warning',
-  showCancelButton: true,
-  confirmButtonText: 'Yes, delete it!',
-  cancelButtonText: 'No, cancel!',
-  reverseButtons: true
-}).then((result) => {
-  if (result.value) {
-    swalWithBootstrapButtons.fire(
-      'Deleted!',
-      'Your file has been deleted.',
-      'success'
-    )
-  } else if (
-    // Read more about handling dismissals
-    result.dismiss === Swal.DismissReason.cancel
-  ) {
-    swalWithBootstrapButtons.fire(
-      'Cancelled',
-      'Your imaginary file is safe :)',
-      'error'
-    )
-  }
-})
-
-            },
+            
+            eliminarCategoria(categoria){
+             
+                   alert('Eliminado');
+                   
+                },
             validarCategoria(){
                 this.errorCategoria=0;
                 this.errorMostrarMsjCategoria =[];
@@ -292,6 +258,20 @@
                                 break;
                             }
                             case 'actualizar':
+                            {
+                                
+                                this.modal=1;
+                                this.tituloModal='Actualizar Paciente';
+                                this.tipoAccion=2;
+                                this.categoria_id= data['id'];
+                                  this.nombre= data['nombre'];
+                                this.telefono =data['telefono'];
+                                this.correo = data['correo'];
+                                
+                                break;
+                            }
+
+                            case 'eliminar':
                             {
                                 
                                 this.modal=1;
